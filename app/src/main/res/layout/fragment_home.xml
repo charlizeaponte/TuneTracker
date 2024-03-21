@@ -38,7 +38,7 @@
         android:src="@drawable/olivia_rodrigo" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/button"
+        android:id="@+id/homeButton"
         android:layout_width="201dp"
         android:layout_height="69dp"
         android:layout_marginLeft="155dp"
