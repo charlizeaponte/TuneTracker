@@ -2,7 +2,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="13dp"
+    android:background="@color/black">
 
     <ImageView
         android:id="@+id/songImage"
@@ -11,25 +12,31 @@
         android:scaleType="centerCrop" />
 
     <TextView
-        android:id="@+id/songNameTextView"
+        android:id="@+id/songName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/baloo"
         android:text="Song Name"
+        android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/artistTextView"
+        android:id="@+id/artist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/baloo"
         android:text="Artist Name"
+        android:textColor="#FFFFFF"
         android:textSize="16sp" />
 
     <TextView
-        android:id="@+id/durationTextView"
+        android:id="@+id/duration"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/baloo"
         android:text="Duration"
+        android:textColor="#FFFFFF"
         android:textSize="14sp" />
 </LinearLayout>
