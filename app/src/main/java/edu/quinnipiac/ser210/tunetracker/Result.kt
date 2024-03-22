@@ -6,5 +6,6 @@ data class Result(
     val isExplicit: Boolean,
     val songImage: String,
     val title: String,
-    val videoId: String
+    val videoId: String,
+    val lyrics: String
 )
