@@ -1,14 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".detailFragment">
+    tools:context=".detailFragment"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/black">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/songNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/baloo"
+        android:text="song name"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+        android:textSize="40dp" />
 
-</FrameLayout>
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="374dp"
+        android:layout_height="265dp"
+        android:src="@android:drawable/ic_menu_gallery" />
+
+    <TextView
+        android:id="@+id/artistNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:fontFamily="@font/baloo"
+        android:text="[artist name] [duration]"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:layout_marginBottom="10dp"
+        android:textSize="20dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="174dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/baloo"
+        android:text="Return to Search"
+        android:textColor="@color/black"
+        android:textSize="15dp"
+        app:backgroundTint="@color/white"/>
+
+</LinearLayout>

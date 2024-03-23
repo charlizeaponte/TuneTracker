@@ -1,14 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".homeFragment">
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/black">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/titleView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="59dp"
+        android:fontFamily="@font/baloo"
+        android:text="Tune Tracker"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/white"
+        android:textSize="50sp"
+        android:textStyle="bold" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/subTitleView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/baloo"
+        android:text="Find any popular song's lyrics!"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="515dp"
+        android:layout_height="296dp"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/olivia_rodrigo" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/homeButton"
+        android:layout_width="184dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/baloo"
+        android:text="Start Searching"
+        android:textColor="@color/black"
+        android:textSize="15dp"
+        app:backgroundTint="@color/white" />
+</LinearLayout>
