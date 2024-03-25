@@ -9,6 +9,8 @@ interface ApiInterface {
    //Might need ? after search in the get method
     @GET("search")
     fun getSearch(): Call<ArrayList<searchData?>?>?
+    @GET("lyrics/plain")
+    fun getLyrics(): Call<ArrayList<lyrics?>?>?
 
     companion object{
 

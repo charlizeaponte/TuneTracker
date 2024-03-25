@@ -4,8 +4,7 @@ data class Result(
     val artist: String,
     val duration: String,
     val isExplicit: Boolean,
-    val songImage: String,
+    val thumbnail: String,
     val title: String,
     val videoId: String,
-    val lyrics: String
 )
