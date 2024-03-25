@@ -36,7 +36,7 @@ class SongItemAdapter : RecyclerView.Adapter<SongItemAdapter.SongItemViewHolder>
             companion object{
                 fun inflateFrom(parent: ViewGroup): SongItemViewHolder {
                     val layoutInflater = LayoutInflater.from(parent.context)
-                    val view = layoutInflater.inflate(R.layout.song_item, parent, false) as TextView
+                    val view = layoutInflater.inflate(R.layout.item_song, parent, false) as TextView
                     return SongItemViewHolder(view)
 
 
