@@ -1,10 +1,12 @@
 package edu.quinnipiac.ser210.tunetracker
+import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.TextView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.NavController
 
-class SongItemAdapter : RecyclerView.Adapter<SongItemAdapter.SongItemViewHolder>() {
+class SongItemAdapter(val context: Context, var navController: NavController) : RecyclerView.Adapter<SongItemAdapter.SongItemViewHolder>() {
 
 
     //current error- Song object is not defined yet
@@ -18,6 +20,17 @@ class SongItemAdapter : RecyclerView.Adapter<SongItemAdapter.SongItemViewHolder>
 
     //itemCount used to make sure we display all the data
     override fun getItemCount() = data.size
+
+//    fun setSearchListItems(searchData: ArrayList<searchData>)
+//    {
+//        data = searchData
+//        notifyDataSetChanged()
+//    }
+
+//    fun setHerosListItems(heroes: ArrayList<Hero>){
+//        heroList = heroes
+//        notifyDataSetChanged()
+//    }
 
     //creates view
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
