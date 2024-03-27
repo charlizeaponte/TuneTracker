@@ -1,5 +1,8 @@
 package edu.quinnipiac.ser210.tunetracker
 
+
+
+
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -10,10 +13,12 @@ import retrofit2.http.Headers
 import retrofit2.http.Query
 
 
+
 interface ApiInterface {
    //Might need ? after search in the get method
     @GET("search")
     @Headers("X-RapidAPI-Key:832c38ddcfmshee53ce9983b62bfp187fd9jsn18973a142442", "X-RapidAPI-Host:youtube-music-api3.p.rapidapi.com")
+
     fun getSearch(@Query("q") search:String, @Query("type") type: String): Call<APIResult??>?
 
     @GET("music/lyrics/plain")
