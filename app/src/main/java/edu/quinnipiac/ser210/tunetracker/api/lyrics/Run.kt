@@ -1,4 +1,4 @@
-package edu.quinnipiac.ser210.tunetracker
+package edu.quinnipiac.ser210.tunetracker.api.lyrics
 
 data class Run(
     val bold: Boolean,
