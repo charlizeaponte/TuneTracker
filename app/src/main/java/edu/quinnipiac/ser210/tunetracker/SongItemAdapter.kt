@@ -21,11 +21,11 @@ class SongItemAdapter(val context: Context, var navController: NavController) : 
     //itemCount used to make sure we display all the data
     override fun getItemCount() = data.size
 
-//    fun setSearchListItems(searchData: ArrayList<searchData>)
-//    {
-//        data = searchData
-//        notifyDataSetChanged()
-//    }
+    fun setSearchListItems(searchData: List<Result>)
+    {
+        data = searchData
+        notifyDataSetChanged()
+    }
 
 //    fun setHerosListItems(heroes: ArrayList<Hero>){
 //        heroList = heroes
