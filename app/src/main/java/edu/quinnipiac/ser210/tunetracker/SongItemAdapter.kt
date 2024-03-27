@@ -12,7 +12,7 @@ class SongItemAdapter(val context: Context, var navController: NavController) : 
     //current error- Song object is not defined yet
     //these are the objects we will pull from the API
     //makes sure view updates when data changes
-    var data = listOf<Result>()
+    var data = listOf<APISongData>()
     set (value) {
             field = value
             notifyDataSetChanged()
@@ -21,7 +21,7 @@ class SongItemAdapter(val context: Context, var navController: NavController) : 
     //itemCount used to make sure we display all the data
     override fun getItemCount() = data.size
 
-    fun setSearchListItems(searchData: List<Result>)
+    fun setSearchListItems(searchData: List<APISongData>)
     {
         data = searchData
         notifyDataSetChanged()
@@ -55,7 +55,7 @@ class SongItemAdapter(val context: Context, var navController: NavController) : 
                 }
             }
 
-            fun bind(item: Result) {
+            fun bind(item: APISongData) {
                 rootView.text = item.title
             }
         }
