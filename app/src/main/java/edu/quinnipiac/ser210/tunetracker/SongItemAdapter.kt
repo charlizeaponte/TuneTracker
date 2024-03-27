@@ -5,6 +5,7 @@ import android.widget.TextView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.NavController
+import edu.quinnipiac.ser210.tunetracker.api.song.Song
 
 class SongItemAdapter(val context: Context, var navController: NavController) : RecyclerView.Adapter<SongItemAdapter.SongItemViewHolder>() {
 
@@ -12,7 +13,7 @@ class SongItemAdapter(val context: Context, var navController: NavController) : 
     //current error- Song object is not defined yet
     //these are the objects we will pull from the API
     //makes sure view updates when data changes
-    var data = listOf<APISongData>()
+    var data = listOf<Song>()
     set (value) {
             field = value
             notifyDataSetChanged()
@@ -21,7 +22,7 @@ class SongItemAdapter(val context: Context, var navController: NavController) : 
     //itemCount used to make sure we display all the data
     override fun getItemCount() = data.size
 
-    fun setSearchListItems(searchData: List<APISongData>)
+    fun setSearchListItems(searchData: List<Song>)
     {
         data = searchData
         notifyDataSetChanged()
@@ -55,8 +56,21 @@ class SongItemAdapter(val context: Context, var navController: NavController) : 
                 }
             }
 
-            fun bind(item: APISongData) {
+            fun bind(item: Song) {
                 rootView.text = item.title
             }
         }
 }
+
+/*  SESE:
+     WHEN YOU DO THE RECYCLEVIEW
+
+     pass in the Song as a serializable as the following when creating the details fragment
+     var bundle = Bundle() (or however it's made)
+
+     bundle.putSerializable(song)
+     -- where song is the Song object (in api.song.Song)
+
+
+
+    */

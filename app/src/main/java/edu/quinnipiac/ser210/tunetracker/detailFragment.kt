@@ -1,13 +1,21 @@
 package edu.quinnipiac.ser210.tunetracker
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import edu.quinnipiac.ser210.tunetracker.api.lyrics.LyricsResult
+import edu.quinnipiac.ser210.tunetracker.api.song.Song
+import edu.quinnipiac.ser210.tunetracker.api.song.SongResult
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class detailFragment : Fragment() {
 
@@ -24,6 +32,48 @@ class detailFragment : Fragment() {
 
         view.findViewById<Button>(R.id.returnButton).setOnClickListener {
             navController.navigate(R.id.action_detailFragment_to_searchFragment)
+        }
+
+
+
+//for when the song is passed and passes it to the function
+        var song = (savedInstanceState?.getSerializable("Song") as Song?)
+
+        if(song != null) {
+            onSongReceived(song, view)
+        }
+
+    }
+
+
+    fun onSongReceived(song: Song, view: View) {
+
+        //sets text from song api to the view
+        view.findViewById<TextView>(R.id.songNameTextView).text = song.title
+        view.findViewById<TextView>(R.id.artistNameTextView).text = song.artist
+
+
+//Api for the lyrics
+        val apiInterface = ApiInterface.create().getLyrics(song.videoId)
+        if(apiInterface != null) {
+            apiInterface
+                .enqueue(object : Callback<LyricsResult?> {
+                    override fun onResponse(
+                        call: Call<LyricsResult?>,
+                        response: Response<LyricsResult?>
+                    ) {
+                        Log.v("LyricsAPI", "Response Received")
+
+                    }
+
+                    override fun onFailure(call: Call<LyricsResult?>, t: Throwable) {
+                        if (t != null) {
+                            t.message?.let { Log.d("onFailure", it) }
+
+                        }
+                    }
+
+                })
         }
     }
 }
