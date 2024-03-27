@@ -7,6 +7,7 @@
     android:gravity="center"
     android:background="@color/black">
 
+
     <TextView
         android:id="@+id/titleView"
         android:layout_width="match_parent"
@@ -37,7 +38,7 @@
         android:layout_marginTop="30dp"
         android:src="@drawable/olivia_rodrigo" />
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/homeButton"
         android:layout_width="184dp"
         android:layout_height="58dp"
