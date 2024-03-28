@@ -20,7 +20,7 @@ interface ApiInterface {
     fun getSearch(@Query("q") search:String, @Query("type") type: String): Call<SongResult??>?
 
     @GET("music/lyrics/plain")
-    fun getLyrics(id:String): Call<LyricsResult?>?
+    fun getLyrics(@Query("id") id:String): Call<LyricsResult?>?
 
     companion object{
 
