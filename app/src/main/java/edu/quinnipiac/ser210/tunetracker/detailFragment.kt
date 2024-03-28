@@ -1,5 +1,7 @@
 package edu.quinnipiac.ser210.tunetracker
 
+import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -43,6 +45,11 @@ class detailFragment : Fragment() {
             onSongReceived(song, view)
         }
 
+    }
+    private fun applyBackgroundColor() {
+        val sharedPref = activity?.getSharedPreferences("AppSettings", Context.MODE_PRIVATE)
+        val color = sharedPref?.getInt("BackgroundColor", Color.BLACK) ?: Color.BLACK
+        view?.setBackgroundColor(color)
     }
 
 
