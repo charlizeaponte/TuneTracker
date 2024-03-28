@@ -9,6 +9,7 @@
     tools:context=".MainActivity">
 
     <LinearLayout
+        android:id="@+id/main_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical" >
@@ -18,8 +19,8 @@
         android:layout_width="match_parent"
         android:fontFamily="@font/baloo"
         android:layout_height="?attr/actionBarSize"
-        android:background="@android:color/white"
-        app:titleTextColor="@android:color/black"
+        android:background="@android:color/black"
+        app:titleTextColor="@android:color/white"
         android:elevation="4dp" />
 
     <androidx.fragment.app.FragmentContainerView
