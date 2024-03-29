@@ -28,10 +28,6 @@ class SongItemAdapter(val context: Context, var navController: NavController) : 
         notifyDataSetChanged()
     }
 
-//    fun setHerosListItems(heroes: ArrayList<Hero>){
-//        heroList = heroes
-//        notifyDataSetChanged()
-//    }
 
     //creates view
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)

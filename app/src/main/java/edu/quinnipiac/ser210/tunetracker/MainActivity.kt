@@ -24,18 +24,20 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
     }
 
+    // supposed to apply background color when the user selects settings, but it's not working right now
     private fun applyBackgroundColor() {
         val sharedPref = getSharedPreferences("AppSettings", MODE_PRIVATE)
         val color = sharedPref.getInt("BackgroundColor", Color.BLACK)
         val rootView = findViewById<ViewGroup>(R.id.main_container)
         rootView.setBackgroundColor(color)
     }
-
+    // options menu from toolbar
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
         return true
     }
 
+    // tree for when an item from the menu is selected
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_share -> {
@@ -54,6 +56,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // brings up the share content options for user
     private fun shareContent() {
         val shareIntent = Intent().apply {
             action = Intent.ACTION_SEND
@@ -63,8 +66,9 @@ class MainActivity : AppCompatActivity() {
         startActivity(Intent.createChooser(shareIntent, null))
     }
 
+    // options for selecting background color
     private fun openSettings() {
-        val colors = arrayOf("Red", "Green", "Blue", "White")
+        val colors = arrayOf("Red", "Green", "Blue", "Gray")
         val builder = androidx.appcompat.app.AlertDialog.Builder(this)
         builder.setTitle("Choose a background color")
         builder.setItems(colors) { _, which ->
@@ -90,6 +94,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showHelpInfo() {
-        Toast.makeText(this, "App version 1.0. This app uses a RestAPI to look up song lyrics.", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "App version 1.0. This app uses a RestAPI to look up song lyrics, display song duration, artist name, and display artist photos. This app was created by Julia, Charlize and SeSe for Professor Ruby's SER210 Spring 2024 course.", Toast.LENGTH_LONG).show()
     }
 }
