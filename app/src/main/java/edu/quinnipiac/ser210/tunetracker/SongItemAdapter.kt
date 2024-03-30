@@ -11,6 +11,7 @@ import androidx.navigation.NavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import edu.quinnipiac.ser210.tunetracker.api.song.Song
+import androidx.navigation.fragment.findNavController
 //var songs = listOf<Song>()
 var songs : ArrayList<Song> = ArrayList()
 
@@ -44,7 +45,7 @@ class SongItemAdapter(val context: Context, var navController: NavController) : 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongItemViewHolder {
 
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_song,parent,false)
-        return SongItemViewHolder(view, context)
+        return SongItemViewHolder(view, context, navController)
     }
 //    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
 //    : SongItemViewHolder = SongItemViewHolder.inflateFrom(parent)
@@ -56,7 +57,7 @@ class SongItemAdapter(val context: Context, var navController: NavController) : 
     }
 
     //defines the view
-    class SongItemViewHolder (itemView: View, private val context: Context)
+    class SongItemViewHolder (itemView: View, private val context: Context, var navController: NavController)
         : RecyclerView.ViewHolder(itemView) {
 
         private val title: TextView = itemView!!.findViewById(R.id.songName)
@@ -66,13 +67,13 @@ class SongItemAdapter(val context: Context, var navController: NavController) : 
 
 
         //listener for detail fragment, pass along song info
-//        init {
-//            itemView.setOnClickListener {
-//                val action = searchFragmentDirections.actionSearchFragmentToDetailFragment()
-//                NavController.navigate(action)
-//
-//            }
-//        }
+        init {
+            itemView.setOnClickListener {
+                Log.v("Navigating", "RecycleView Clicked")
+                val action = searchFragmentDirections.actionSearchFragmentToDetailFragment(pos)
+                navController.navigate(action)
+            }
+        }
 
         fun bind(position: Int){
             pos = position

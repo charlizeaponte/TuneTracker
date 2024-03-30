@@ -9,9 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import edu.quinnipiac.ser210.tunetracker.api.lyrics.LyricsResult
 import edu.quinnipiac.ser210.tunetracker.api.song.Song
 import edu.quinnipiac.ser210.tunetracker.api.song.SongResult
@@ -21,7 +24,22 @@ import retrofit2.Response
 
 class detailFragment : Fragment() {
 
+    var song_num = 0
+
     lateinit var navController: NavController
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        //   recipient = arguments!!.getString("recipient")
+        val bundle = arguments
+        if (bundle == null) {
+            Log.e("DetailFragment", "DetailFragment did not receive song_num")
+
+            return
+        }
+        song_num = detailFragmentArgs.fromBundle(bundle).songNum
+
+    }
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View? {
         return inflater.inflate(R.layout.fragment_detail, container, false)
 
@@ -40,6 +58,17 @@ class detailFragment : Fragment() {
 
 //for when the song is passed and passes it to the function
         var song = (savedInstanceState?.getSerializable("Song") as Song?)
+
+        val image: ImageView = view.findViewById(R.id.imageView2)
+        view.findViewById<TextView>(R.id.songNameTextView).text = songs.get(song_num).title
+        val artist = songs.get(song_num).artist
+        val duration = songs.get(song_num).duration
+
+        view.findViewById<TextView>(R.id.artistNameTextView).text = duration + " " + artist
+        Glide.with(requireContext()).load(songs.get(song_num).thumbnail)
+            .apply(RequestOptions().centerCrop())
+            .into(image)
+
 
         if(song != null) {
             onSongReceived(song, view)
