@@ -61,10 +61,10 @@ class detailFragment : Fragment() {
 
         val image: ImageView = view.findViewById(R.id.imageView2)
         view.findViewById<TextView>(R.id.songNameTextView).text = songs.get(song_num).title
-        val artist = songs.get(song_num).artist
+        val artist = songs.get(song_num).author
         val duration = songs.get(song_num).duration
 
-        view.findViewById<TextView>(R.id.artistNameTextView).text = duration + " " + artist
+        view.findViewById<TextView>(R.id.artistNameTextView).text = duration + " By " + artist
         Glide.with(requireContext()).load(songs.get(song_num).thumbnail)
             .apply(RequestOptions().centerCrop())
             .into(image)
@@ -86,7 +86,7 @@ class detailFragment : Fragment() {
 
         //sets text from song api to the view
         view.findViewById<TextView>(R.id.songNameTextView).text = song.title
-        view.findViewById<TextView>(R.id.artistNameTextView).text = song.artist
+        view.findViewById<TextView>(R.id.artistNameTextView).text = song.author
 
 
 //Api for the lyrics

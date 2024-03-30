@@ -4,7 +4,7 @@ import java.io.Serializable
 
 
 data class Song(
-    val artist: String,
+    val author: String,
     val duration: String,
     val isExplicit: Boolean,
     val thumbnail: String,
