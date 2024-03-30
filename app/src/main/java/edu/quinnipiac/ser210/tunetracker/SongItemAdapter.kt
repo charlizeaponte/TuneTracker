@@ -1,11 +1,19 @@
 package edu.quinnipiac.ser210.tunetracker
 import android.content.Context
+import android.util.Log
+import android.view.LayoutInflater
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.TextView
-import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.navigation.NavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import edu.quinnipiac.ser210.tunetracker.api.song.Song
+//var songs = listOf<Song>()
+var songs : ArrayList<Song> = ArrayList()
+
 
 class SongItemAdapter(val context: Context, var navController: NavController) : RecyclerView.Adapter<SongItemAdapter.SongItemViewHolder>() {
 
@@ -13,47 +21,70 @@ class SongItemAdapter(val context: Context, var navController: NavController) : 
     //current error- Song object is not defined yet
     //these are the objects we will pull from the API
     //makes sure view updates when data changes
-    var data = listOf<Song>()
-    set (value) {
-            field = value
-            notifyDataSetChanged()
-        }
+//    var songs = listOf<Song>()
+//        set (value) {
+//            field = value
+//            notifyDataSetChanged()
+//        }
 
     //itemCount used to make sure we display all the data
-    override fun getItemCount() = data.size
+    override fun getItemCount() = songs.size
 
     fun setSearchListItems(searchData: List<Song>)
     {
-        data = searchData
+        Log.v("SearchListItems","recieved: " + searchData)
+        songs = searchData as ArrayList<Song>
         notifyDataSetChanged()
+        Log.v("SearchListItems","list: " + songs)
+
     }
 
 
     //creates view
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
-    : SongItemViewHolder = SongItemViewHolder.inflateFrom(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongItemViewHolder {
+
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_song,parent,false)
+        return SongItemViewHolder(view, context)
+    }
+//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
+//    : SongItemViewHolder = SongItemViewHolder.inflateFrom(parent)
 
     //binds data to the view
     override fun onBindViewHolder(holder: SongItemViewHolder, position: Int) {
-        val item = data[position]
-        holder.bind(item)
+        //val item = songs[position]
+        holder.bind(position)
     }
 
     //defines the view
-    class SongItemViewHolder (val rootView: TextView)
-        : RecyclerView.ViewHolder(rootView) {
+    class SongItemViewHolder (itemView: View, private val context: Context)
+        : RecyclerView.ViewHolder(itemView) {
 
-            companion object{
-                fun inflateFrom(parent: ViewGroup): SongItemViewHolder {
-                    val layoutInflater = LayoutInflater.from(parent.context)
-                    val view = layoutInflater.inflate(R.layout.item_song, parent, false) as TextView
-                    return SongItemViewHolder(view)
+        private val title: TextView = itemView!!.findViewById(R.id.songName)
+        private val artistDuration: TextView = itemView!!.findViewById(R.id.artist)
+        private val image: ImageView = itemView!!.findViewById(R.id.songImage)
+        private var pos:Int = 0
 
-                }
-            }
 
-            fun bind(item: Song) {
-                rootView.text = item.title
+        //listener for detail fragment, pass along song info
+//        init {
+//            itemView.setOnClickListener {
+//                val action = searchFragmentDirections.actionSearchFragmentToDetailFragment()
+//                NavController.navigate(action)
+//
+//            }
+//        }
+
+        fun bind(position: Int){
+            pos = position
+            val currSong = songs.get(position)
+            title.text = currSong.title
+            val artist = currSong.artist
+            val duration =  currSong.duration
+            artistDuration.text = duration + " By " + artist
+
+            Glide.with(context).load(currSong.thumbnail)
+                .apply(RequestOptions().centerCrop())
+                .into(image)
             }
         }
 }
@@ -66,7 +97,5 @@ class SongItemAdapter(val context: Context, var navController: NavController) : 
 
      bundle.putSerializable(song)
      -- where song is the Song object (in api.song.Song)
-
-
 
     */

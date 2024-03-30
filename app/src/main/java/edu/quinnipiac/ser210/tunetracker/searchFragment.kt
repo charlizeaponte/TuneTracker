@@ -70,8 +70,10 @@ class searchFragment : Fragment() {
                             response: Response<SongResult?>
                         ) {
                             Log.v("API Response", "I just responded")
+
                             if (response?.body() != null) {
                                 var songs = (response.body()!! as SongResult).result;
+                                Log.v("API Response", "songs: " + songs)
                                 recyclerAdapter.setSearchListItems(songs)
                             }
                         }
