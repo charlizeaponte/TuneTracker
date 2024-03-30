@@ -1,5 +1,7 @@
 package edu.quinnipiac.ser210.tunetracker
 
+import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,6 +12,7 @@ import android.widget.EditText
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import edu.quinnipiac.ser210.tunetracker.api.song.SongResult
 import edu.quinnipiac.ser210.tunetracker.databinding.FragmentSearchBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -37,23 +40,15 @@ class searchFragment : Fragment() {
         val view = binding.root
         return view
     }
-
-
-
-
-
-//    override fun onCreateView(
-//        inflater: LayoutInflater, container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View? {
-//        // Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_main, container, false)
-//    }
-
+    private fun applyBackgroundColor() {
+        val sharedPref = activity?.getSharedPreferences("AppSettings", Context.MODE_PRIVATE)
+        val color = sharedPref?.getInt("BackgroundColor", Color.BLACK) ?: Color.BLACK
+        view?.setBackgroundColor(color)
+    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d("searchFragment", "Fragment Created");
+        Log.d("searchFragment", "Fragment Created")
         super.onViewCreated(view, savedInstanceState)
 
         recyclerView = view.findViewById(R.id.songsRecyclerView)
@@ -65,23 +60,25 @@ class searchFragment : Fragment() {
         var search = view.findViewById<EditText>(R.id.searchEditText)
 
         binding.searchButton.setOnClickListener {
-            Log.v("button", "Searched for " + search.text.toString());
+            Log.v("button", "Searched for " + search.text.toString())
             val apiInterface = ApiInterface.create().getSearch(search.text.toString(), "song")
             if (apiInterface != null) {
                 apiInterface
-                    .enqueue(object : Callback<APIResult?> {
+                    .enqueue(object : Callback<SongResult?> {
                         override fun onResponse(
-                            call: Call<APIResult?>,
-                            response: Response<APIResult?>
+                            call: Call<SongResult?>,
+                            response: Response<SongResult?>
                         ) {
-                            Log.v("API Response", "I just responded");
+                            Log.v("API Response", "I just responded")
+
                             if (response?.body() != null) {
-                                var songs = (response.body()!! as APIResult).result;
+                                var songs = (response.body()!! as SongResult).result;
+                                Log.v("API Response", "songs: " + songs)
                                 recyclerAdapter.setSearchListItems(songs)
                             }
                         }
 
-                        override fun onFailure(call: Call<APIResult?>, t: Throwable) {
+                        override fun onFailure(call: Call<SongResult?>, t: Throwable) {
                             if (t != null) {
                                 t.message?.let { Log.d("onFailure", it) }
 
@@ -91,18 +88,6 @@ class searchFragment : Fragment() {
                     })
             }
         }
-//                apiInterface.enqueue(object : Callback<ArrayList<APIResult?>?>  {
-//                    override fun onResponse(
-//                        call: Call<ArrayList<APIResult?>?>,
-//                        response: Response<ArrayList<APIResult?>?>
-//                    ) {
-
-//                    }
-//
-//                    override fun onFailure(call: Call<ArrayList<APIResult?>?>, t: Throwable) {
-//
-//                    }
-//                })
 
 
 
