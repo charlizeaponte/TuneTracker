@@ -40,12 +40,6 @@ class searchFragment : Fragment() {
         val view = binding.root
         return view
     }
-    private fun applyBackgroundColor() {
-        val sharedPref = activity?.getSharedPreferences("AppSettings", Context.MODE_PRIVATE)
-        val color = sharedPref?.getInt("BackgroundColor", Color.BLACK) ?: Color.BLACK
-        view?.setBackgroundColor(color)
-    }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d("searchFragment", "Fragment Created")

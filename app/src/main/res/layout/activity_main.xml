@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:fontFamily="@font/baloo"
         android:layout_height="?attr/actionBarSize"
-        android:background="@android:color/black"
+        android:background="@color/black"
         app:titleTextColor="@android:color/white"
         android:elevation="4dp" />
 

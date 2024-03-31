@@ -17,6 +17,7 @@ import androidx.appcompat.widget.Toolbar
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val sharedPrefs = getSharedPreferences("ThemePrefs", MODE_PRIVATE)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -24,13 +25,6 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
     }
 
-    // supposed to apply background color when the user selects settings, but it's not working right now
-    private fun applyBackgroundColor() {
-        val sharedPref = getSharedPreferences("AppSettings", MODE_PRIVATE)
-        val color = sharedPref.getInt("BackgroundColor", Color.BLACK)
-        val rootView = findViewById<ViewGroup>(R.id.main_container)
-        rootView.setBackgroundColor(color)
-    }
     // options menu from toolbar
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
@@ -68,31 +62,32 @@ class MainActivity : AppCompatActivity() {
 
     // options for selecting background color
     private fun openSettings() {
-        val colors = arrayOf("Red", "Green", "Blue", "Gray")
+        val themes = arrayOf("Green", "Red", "Blue", "Grey")
         val builder = androidx.appcompat.app.AlertDialog.Builder(this)
-        builder.setTitle("Choose a background color")
-        builder.setItems(colors) { _, which ->
-            val chosenColor = when (which) {
-                0 -> Color.RED
-                1 -> Color.GREEN
-                2 -> Color.BLUE
-                3 -> Color.GRAY
-                else -> Color.BLACK
-            }
-            changeBackgroundColor(chosenColor)
+        builder.setTitle("Choose a Theme")
+
+        builder.setItems(themes) { _, which ->
+            val selectedTheme = themes[which]
+
+            val sharedPrefs = getSharedPreferences("ThemePrefs", MODE_PRIVATE)
+            sharedPrefs.edit().putString("SelectedTheme", selectedTheme).apply()
+
+            applyTheme(selectedTheme)
+
+            recreate()
         }
         builder.show()
     }
 
-    private fun changeBackgroundColor(color: Int) {
-        // Save the color to SharedPreferences
-        val sharedPref = getSharedPreferences("AppSettings", MODE_PRIVATE)
-        with (sharedPref.edit()) {
-            putInt("BackgroundColor", color)
-            apply()
+    private fun applyTheme(themeName: String) {
+        when (themeName) {
+            "Green" -> setTheme(R.style.Theme_TuneTracker_Green)
+            "Red" -> setTheme(R.style.Theme_TuneTracker_Red)
+            "Blue" -> setTheme(R.style.Theme_TuneTracker_Blue)
+            "Grey" -> setTheme(R.style.Theme_TuneTracker_Grey)
+            else -> setTheme(R.style.Theme_TuneTracker)
         }
     }
-
     private fun showHelpInfo() {
         Toast.makeText(this, "App version 1.0. This app uses a RestAPI to look up song lyrics, display song duration, artist name, and display artist photos. This app was created by Julia, Charlize and SeSe for Professor Ruby's SER210 Spring 2024 course.", Toast.LENGTH_LONG).show()
     }

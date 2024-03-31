@@ -64,7 +64,7 @@ class detailFragment : Fragment() {
         val artist = songs.get(song_num).author
         val duration = songs.get(song_num).duration
 
-        view.findViewById<TextView>(R.id.artistNameTextView).text = duration + " By " + artist
+        view.findViewById<TextView>(R.id.artistNameTextView).text = "By " + artist + " " + duration
         Glide.with(requireContext()).load(songs.get(song_num).thumbnail)
             .apply(RequestOptions().centerCrop())
             .into(image)
@@ -75,12 +75,6 @@ class detailFragment : Fragment() {
         }
 
     }
-    private fun applyBackgroundColor() {
-        val sharedPref = activity?.getSharedPreferences("AppSettings", Context.MODE_PRIVATE)
-        val color = sharedPref?.getInt("BackgroundColor", Color.BLACK) ?: Color.BLACK
-        view?.setBackgroundColor(color)
-    }
-
 
     fun onSongReceived(song: Song, view: View) {
 

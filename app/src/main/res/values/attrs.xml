@@ -1,0 +1,3 @@
+<resources>
+    <attr name="colorBackground" format="reference" />
+</resources>
