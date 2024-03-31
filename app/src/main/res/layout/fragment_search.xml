@@ -14,6 +14,8 @@
         android:fontFamily="@font/baloo"
         android:hint="  Enter song..."
         android:inputType="text"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="30dp"
         android:textAlignment="viewStart"
         android:textColorHint="@color/black" />
 

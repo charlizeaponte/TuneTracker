@@ -1,6 +1,9 @@
 package edu.quinnipiac.ser210.tunetracker
 
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
@@ -28,8 +32,15 @@ class detailFragment : Fragment() {
     var song_num = 0
     var lyrics = "loading lyrics..."
 
-    private lateinit var binding: FragmentDetailBinding
+    private var _binding: FragmentDetailBinding? = null
+    private val binding get() = _binding!!
     lateinit var navController: NavController
+
+    private val themeChangeReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            updateFragmentBackground()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,8 +55,8 @@ class detailFragment : Fragment() {
         view?.findViewById<TextView>(R.id.lyricText)?.setText(lyrics)
 
     }
-    override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View? {
-        binding = FragmentDetailBinding.inflate(inflater, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        _binding = FragmentDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -68,7 +79,7 @@ class detailFragment : Fragment() {
         val artist = songs.get(song_num).author
         val duration = songs.get(song_num).duration
 
-        binding.artistNameTextView.text = "$duration By $artist"
+        binding.artistNameTextView.text = "By $artist $duration"
 
         Glide.with(requireContext()).load(songs.get(song_num).thumbnail)
             .apply(RequestOptions().centerCrop())
@@ -77,6 +88,38 @@ class detailFragment : Fragment() {
         onSongReceived(song , view)
         binding.lyricText.text = lyrics
 
+        updateFragmentBackground()
+
+    }
+    override fun onStart() {
+        super.onStart()
+        context?.registerReceiver(themeChangeReceiver, IntentFilter(MainActivity.THEME_CHANGED_ACTION))
+        updateFragmentBackground()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        context?.unregisterReceiver(themeChangeReceiver)
+    }
+
+    private fun updateFragmentBackground() {
+        val context = context ?: return
+        val sharedPrefs = activity?.getSharedPreferences("ThemePrefs", Context.MODE_PRIVATE)
+        val selectedTheme = sharedPrefs?.getString("SelectedTheme", null)
+        val colorResId = when (selectedTheme) {
+            "Green" -> R.color.green
+            "Red" -> R.color.red
+            "Blue" -> R.color.blue
+            "Grey" -> R.color.grey
+            "Black" -> R.color.black
+            else -> R.color.black
+        }
+        val color = ContextCompat.getColor(context, colorResId)
+        binding.root.setBackgroundColor(color)
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null // Nullify the binding when the view is destroyed to avoid memory leaks
     }
 
     fun onSongReceived(song: Song?, view: View) {

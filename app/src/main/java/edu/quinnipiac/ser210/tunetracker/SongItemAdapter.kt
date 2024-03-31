@@ -86,7 +86,7 @@ class SongItemAdapter(val context: Context, var navController: NavController) : 
             val duration =  currSong.duration
 
             //Log.d("Song Info", currSong.toString())
-            artistDuration.text = duration + " By " + artist
+            artistDuration.text =  "By " + artist + duration
 
             Glide.with(context).load(currSong.thumbnail)
                 .apply(RequestOptions().centerCrop())
