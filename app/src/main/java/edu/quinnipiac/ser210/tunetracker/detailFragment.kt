@@ -25,6 +25,7 @@ import retrofit2.Response
 class detailFragment : Fragment() {
 
     var song_num = 0
+    var lyrics = "loading lyrics..."
 
     lateinit var navController: NavController
 
@@ -38,6 +39,7 @@ class detailFragment : Fragment() {
             return
         }
         song_num = detailFragmentArgs.fromBundle(bundle).songNum
+        view?.findViewById<TextView>(R.id.lyricText)?.setText(lyrics)
 
     }
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View? {
@@ -64,15 +66,19 @@ class detailFragment : Fragment() {
         val artist = songs.get(song_num).author
         val duration = songs.get(song_num).duration
 
+
         view.findViewById<TextView>(R.id.artistNameTextView).text = duration + " By " + artist
         Glide.with(requireContext()).load(songs.get(song_num).thumbnail)
             .apply(RequestOptions().centerCrop())
             .into(image)
 
 
-        if(song != null) {
-            onSongReceived(song, view)
-        }
+        //if(song != null) {
+            onSongReceived(song , view)
+
+        view.findViewById<TextView>(R.id.lyricText).setText(lyrics)
+
+        //}
 
     }
     private fun applyBackgroundColor() {
@@ -82,15 +88,17 @@ class detailFragment : Fragment() {
     }
 
 
-    fun onSongReceived(song: Song, view: View) {
+    fun onSongReceived(song: Song?, view: View) {
 
         //sets text from song api to the view
-        view.findViewById<TextView>(R.id.songNameTextView).text = song.title
-        view.findViewById<TextView>(R.id.artistNameTextView).text = song.author
+//        view.findViewById<TextView>(R.id.songNameTextView).text = song.title
+//        view.findViewById<TextView>(R.id.artistNameTextView).text = song.author
 
+        val video_Id = songs.get(song_num).videoId
+        Log.v("API Response", video_Id.toString())
 
 //Api for the lyrics
-        val apiInterface = ApiInterface.create().getLyrics(song.videoId)
+        val apiInterface = ApiInterface.create().getLyrics(video_Id)
         if(apiInterface != null) {
             apiInterface
                 .enqueue(object : Callback<LyricsResult?> {
@@ -99,9 +107,20 @@ class detailFragment : Fragment() {
                         response: Response<LyricsResult?>
                     ) {
                         Log.v("LyricsAPI", "Response Received")
+                        if (response?.body() != null) {
+                            lyrics = (response.body()!! as LyricsResult).description.text
+                            if (lyrics != null) {
+                                Log.v("API Response", "setting lyrics: $lyrics")
+                                view.findViewById<TextView>(R.id.lyricText).text = lyrics
+                            } else {
+                                // Handle the case where lyrics is null
+                                Log.e("API Response", "Lyrics is null")
+                                view.findViewById<TextView>(R.id.lyricText).text = "no lyrics found"
+
+                            }
+                        }
 
                     }
-
                     override fun onFailure(call: Call<LyricsResult?>, t: Throwable) {
                         if (t != null) {
                             t.message?.let { Log.d("onFailure", it) }
@@ -110,6 +129,7 @@ class detailFragment : Fragment() {
                     }
 
                 })
+
         }
     }
 }

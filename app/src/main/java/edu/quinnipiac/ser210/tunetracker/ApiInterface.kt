@@ -20,6 +20,8 @@ interface ApiInterface {
     fun getSearch(@Query("q") search:String, @Query("type") type: String): Call<SongResult??>?
 
     @GET("music/lyrics/plain")
+    @Headers("X-RapidAPI-Key:832c38ddcfmshee53ce9983b62bfp187fd9jsn18973a142442", "X-RapidAPI-Host:youtube-music-api3.p.rapidapi.com")
+
     fun getLyrics(@Query("id") id:String): Call<LyricsResult?>?
 
     companion object{
