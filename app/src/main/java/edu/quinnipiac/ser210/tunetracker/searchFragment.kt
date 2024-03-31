@@ -1,6 +1,9 @@
 package edu.quinnipiac.ser210.tunetracker
 
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.core.content.ContextCompat
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,6 +31,13 @@ class searchFragment : Fragment() {
 
     private val binding get() = _binding!!
 
+    // Define the BroadcastReceiver
+    private val themeChangeReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            updateFragmentBackground()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.v("searchFragment", "onCreate")
@@ -40,11 +51,30 @@ class searchFragment : Fragment() {
         val view = binding.root
         return view
     }
-//    private fun applyBackgroundColor() {
-//        val sharedPref = activity?.getSharedPreferences("AppSettings", Context.MODE_PRIVATE)
-//        val color = sharedPref?.getInt("BackgroundColor", Color.BLACK) ?: Color.BLACK
-//        view?.setBackgroundColor(color)
-//    }
+    override fun onStart() {
+        super.onStart()
+        context?.registerReceiver(themeChangeReceiver, IntentFilter(MainActivity.THEME_CHANGED_ACTION))
+        updateFragmentBackground()
+    }
+    override fun onStop() {
+        super.onStop()
+        // Unregister the receiver
+        context?.unregisterReceiver(themeChangeReceiver)
+    }
+    private fun updateFragmentBackground() {
+        // Ensure SharedPreferences are accessed correctly
+        val sharedPrefs = activity?.getSharedPreferences("ThemePrefs", Context.MODE_PRIVATE)
+        val selectedTheme = sharedPrefs?.getString("SelectedTheme", "")
+        val color = when (selectedTheme) {
+            "Green" -> R.color.green
+            "Red" -> R.color.red
+            "Blue" -> R.color.blue
+            "Grey" -> R.color.grey
+            "Black" -> R.color.black
+            else -> R.color.black
+        }
+        color?.let { binding.root.setBackgroundColor(ContextCompat.getColor(requireContext(), it)) }
+    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -76,6 +106,7 @@ class searchFragment : Fragment() {
                                 Log.v("API Response", "songs: " + songs)
                                 recyclerAdapter.setSearchListItems(songs)
                             }
+                            updateFragmentBackground()
                         }
 
                         override fun onFailure(call: Call<SongResult?>, t: Throwable) {
@@ -86,12 +117,9 @@ class searchFragment : Fragment() {
                         }
 
                     })
+
             }
         }
-
-
-
-
 
     }
 }
