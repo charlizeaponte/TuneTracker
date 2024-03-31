@@ -1,6 +1,9 @@
 package edu.quinnipiac.ser210.tunetracker
 
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
@@ -18,15 +22,26 @@ import com.bumptech.glide.request.RequestOptions
 import edu.quinnipiac.ser210.tunetracker.api.lyrics.LyricsResult
 import edu.quinnipiac.ser210.tunetracker.api.song.Song
 import edu.quinnipiac.ser210.tunetracker.api.song.SongResult
+import edu.quinnipiac.ser210.tunetracker.databinding.FragmentDetailBinding
+import edu.quinnipiac.ser210.tunetracker.databinding.FragmentHomeBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class detailFragment : Fragment() {
+    private var _binding: FragmentDetailBinding? = null
+    private val binding get() = _binding!!
 
     var song_num = 0
 
     lateinit var navController: NavController
+
+    // Define the BroadcastReceiver
+    private val themeChangeReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            updateFragmentBackground()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,9 +55,9 @@ class detailFragment : Fragment() {
         song_num = detailFragmentArgs.fromBundle(bundle).songNum
 
     }
-    override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View? {
-        return inflater.inflate(R.layout.fragment_detail, container, false)
-
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        _binding = FragmentDetailBinding.inflate(inflater, container, false)
+        return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -53,7 +68,6 @@ class detailFragment : Fragment() {
         view.findViewById<Button>(R.id.returnButton).setOnClickListener {
             navController.navigate(R.id.action_detailFragment_to_searchFragment)
         }
-
 
 
 //for when the song is passed and passes it to the function
@@ -73,7 +87,38 @@ class detailFragment : Fragment() {
         if(song != null) {
             onSongReceived(song, view)
         }
+        updateFragmentBackground()
 
+    }
+    override fun onStart() {
+        super.onStart()
+        context?.registerReceiver(themeChangeReceiver, IntentFilter(MainActivity.THEME_CHANGED_ACTION))
+    }
+    override fun onStop() {
+        super.onStop()
+        // Unregister the receiver
+        context?.unregisterReceiver(themeChangeReceiver)
+    }
+
+    private fun updateFragmentBackground() {
+        // Check if the context and binding are not null before proceeding
+        val context = context ?: return
+        val sharedPrefs = activity?.getSharedPreferences("ThemePrefs", Context.MODE_PRIVATE)
+        val selectedTheme = sharedPrefs?.getString("SelectedTheme", null)
+        val colorResId = when (selectedTheme) {
+            "Green" -> R.color.green
+            "Red" -> R.color.red
+            "Blue" -> R.color.blue
+            "Grey" -> R.color.grey
+            "Black" -> R.color.black
+            else -> R.color.black
+        }
+        val color = ContextCompat.getColor(context, colorResId)
+        _binding?.root?.setBackgroundColor(color)
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     fun onSongReceived(song: Song, view: View) {

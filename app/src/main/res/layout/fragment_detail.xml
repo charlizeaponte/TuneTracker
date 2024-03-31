@@ -7,7 +7,7 @@
     tools:context=".detailFragment"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="?attr/colorBackground">
+    android:background="@color/black">
 
     <TextView
         android:id="@+id/songNameTextView"
