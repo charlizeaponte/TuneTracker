@@ -1,20 +1,18 @@
 package edu.quinnipiac.ser210.tunetracker
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import androidx.navigation.NavController
-import com.google.android.material.navigation.NavigationView
 import android.content.Intent
-import android.graphics.Color
+import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 
 class MainActivity : AppCompatActivity() {
+
+    companion object {
+        const val THEME_CHANGED_ACTION = "edu.quinnipiac.ser210.tunetracker.THEME_CHANGED"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,20 +22,11 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
     }
 
-    // supposed to apply background color when the user selects settings, but it's not working right now
-    private fun applyBackgroundColor() {
-        val sharedPref = getSharedPreferences("AppSettings", MODE_PRIVATE)
-        val color = sharedPref.getInt("BackgroundColor", Color.BLACK)
-        val rootView = findViewById<ViewGroup>(R.id.main_container)
-        rootView.setBackgroundColor(color)
-    }
-    // options menu from toolbar
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
         return true
     }
 
-    // tree for when an item from the menu is selected
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_share -> {
@@ -56,7 +45,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // brings up the share content options for user
     private fun shareContent() {
         val shareIntent = Intent().apply {
             action = Intent.ACTION_SEND
@@ -66,31 +54,28 @@ class MainActivity : AppCompatActivity() {
         startActivity(Intent.createChooser(shareIntent, null))
     }
 
-    // options for selecting background color
     private fun openSettings() {
-        val colors = arrayOf("Red", "Green", "Blue", "Gray")
+        val themes = arrayOf("Green", "Red", "Blue", "Grey", "Black")
         val builder = androidx.appcompat.app.AlertDialog.Builder(this)
-        builder.setTitle("Choose a background color")
-        builder.setItems(colors) { _, which ->
-            val chosenColor = when (which) {
-                0 -> Color.RED
-                1 -> Color.GREEN
-                2 -> Color.BLUE
-                3 -> Color.GRAY
-                else -> Color.BLACK
-            }
-            changeBackgroundColor(chosenColor)
+        builder.setTitle("Choose a Theme")
+        builder.setItems(themes) { _, which ->
+            val selectedTheme = themes[which]
+            val sharedPrefs = getSharedPreferences("ThemePrefs", MODE_PRIVATE)
+            sharedPrefs.edit().putString("SelectedTheme", selectedTheme).apply()
+
+            applyTheme(selectedTheme)
+            notifyThemeChange()
+            recreate()
         }
         builder.show()
     }
 
-    private fun changeBackgroundColor(color: Int) {
-        // Save the color to SharedPreferences
-        val sharedPref = getSharedPreferences("AppSettings", MODE_PRIVATE)
-        with (sharedPref.edit()) {
-            putInt("BackgroundColor", color)
-            apply()
-        }
+    private fun applyTheme(themeName: String) {
+    }
+
+    private fun notifyThemeChange() {
+        val intent = Intent(THEME_CHANGED_ACTION)
+        sendBroadcast(intent)
     }
 
     private fun showHelpInfo() {
