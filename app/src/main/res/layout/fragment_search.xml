@@ -13,6 +13,7 @@
         android:background="@drawable/edit_text_white_outline"
         android:fontFamily="@font/baloo"
         android:hint="  Enter song..."
+        android:layout_marginLeft="20dp"
         android:inputType="text"
         android:textAlignment="viewStart"
         android:textColorHint="@color/black" />
@@ -26,6 +27,8 @@
         android:layout_toEndOf="@id/searchEditText"
         android:fontFamily="@font/baloo"
         android:text="Search"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="40dp"
         android:textColor="@color/black"
         android:textSize="15dp"
         app:backgroundTint="@color/white"/>
