@@ -40,24 +40,18 @@ class searchFragment : Fragment() {
         val view = binding.root
         return view
     }
-//    private fun applyBackgroundColor() {
-//        val sharedPref = activity?.getSharedPreferences("AppSettings", Context.MODE_PRIVATE)
-//        val color = sharedPref?.getInt("BackgroundColor", Color.BLACK) ?: Color.BLACK
-//        view?.setBackgroundColor(color)
-//    }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d("searchFragment", "Fragment Created")
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView = view.findViewById(R.id.songsRecyclerView)
+        recyclerView = binding.songsRecyclerView
         recyclerAdapter = SongItemAdapter(requireContext(), Navigation.findNavController(view))
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = recyclerAdapter
 
 
-        var search = view.findViewById<EditText>(R.id.searchEditText)
+        var search = binding.searchEditText
 
         binding.searchButton.setOnClickListener {
             Log.v("button", "Searched for " + search.text.toString())
@@ -84,7 +78,6 @@ class searchFragment : Fragment() {
 
                             }
                         }
-
                     })
             }
         }

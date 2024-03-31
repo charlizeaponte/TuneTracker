@@ -18,6 +18,7 @@ import com.bumptech.glide.request.RequestOptions
 import edu.quinnipiac.ser210.tunetracker.api.lyrics.LyricsResult
 import edu.quinnipiac.ser210.tunetracker.api.song.Song
 import edu.quinnipiac.ser210.tunetracker.api.song.SongResult
+import edu.quinnipiac.ser210.tunetracker.databinding.FragmentDetailBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -27,6 +28,7 @@ class detailFragment : Fragment() {
     var song_num = 0
     var lyrics = "loading lyrics..."
 
+    private lateinit var binding: FragmentDetailBinding
     lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,8 +45,8 @@ class detailFragment : Fragment() {
 
     }
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View? {
-        return inflater.inflate(R.layout.fragment_detail, container, false)
-
+        binding = FragmentDetailBinding.inflate(inflater, container, false)
+        return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -52,7 +54,7 @@ class detailFragment : Fragment() {
         navController = Navigation.findNavController(view)
 
 
-        view.findViewById<Button>(R.id.returnButton).setOnClickListener {
+        binding.returnButton.setOnClickListener {
             navController.navigate(R.id.action_detailFragment_to_searchFragment)
         }
 
@@ -61,32 +63,21 @@ class detailFragment : Fragment() {
 //for when the song is passed and passes it to the function
         var song = (savedInstanceState?.getSerializable("Song") as Song?)
 
-        val image: ImageView = view.findViewById(R.id.imageView2)
-        view.findViewById<TextView>(R.id.songNameTextView).text = songs.get(song_num).title
+        val image = binding.imageView2
+        binding.songNameTextView.text = songs[song_num].title
         val artist = songs.get(song_num).author
         val duration = songs.get(song_num).duration
 
+        binding.artistNameTextView.text = "$duration By $artist"
 
-        view.findViewById<TextView>(R.id.artistNameTextView).text = duration + " By " + artist
         Glide.with(requireContext()).load(songs.get(song_num).thumbnail)
             .apply(RequestOptions().centerCrop())
             .into(image)
 
-
-        //if(song != null) {
-            onSongReceived(song , view)
-
-        view.findViewById<TextView>(R.id.lyricText).setText(lyrics)
-
-        //}
+        onSongReceived(song , view)
+        binding.lyricText.text = lyrics
 
     }
-    private fun applyBackgroundColor() {
-        val sharedPref = activity?.getSharedPreferences("AppSettings", Context.MODE_PRIVATE)
-        val color = sharedPref?.getInt("BackgroundColor", Color.BLACK) ?: Color.BLACK
-        view?.setBackgroundColor(color)
-    }
-
 
     fun onSongReceived(song: Song?, view: View) {
 
@@ -111,11 +102,11 @@ class detailFragment : Fragment() {
                             lyrics = (response.body()!! as LyricsResult).description.text
                             if (lyrics != null) {
                                 Log.v("API Response", "setting lyrics: $lyrics")
-                                view.findViewById<TextView>(R.id.lyricText).text = lyrics
+                                binding.lyricText.text = lyrics
                             } else {
                                 // Handle the case where lyrics is null
                                 Log.e("API Response", "Lyrics is null")
-                                view.findViewById<TextView>(R.id.lyricText).text = "no lyrics found"
+                                binding.lyricText.text = "no lyrics found"
 
                             }
                         }
