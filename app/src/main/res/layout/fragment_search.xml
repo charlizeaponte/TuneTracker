@@ -32,8 +32,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/songsRecyclerView"
-        android:layout_width="285dp"
-        android:layout_height="346dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="80dp" />
 
 </RelativeLayout>
