@@ -52,7 +52,6 @@ class detailFragment : Fragment() {
             return
         }
         song_num = detailFragmentArgs.fromBundle(bundle).songNum
-        view?.findViewById<TextView>(R.id.lyricText)?.setText(lyrics)
 
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -79,7 +78,7 @@ class detailFragment : Fragment() {
         val artist = songs.get(song_num).author
         val duration = songs.get(song_num).duration
 
-        binding.artistNameTextView.text = "By $artist $duration"
+        binding.artistNameTextView.text = "By $artist   $duration"
 
         Glide.with(requireContext()).load(songs.get(song_num).thumbnail)
             .apply(RequestOptions().centerCrop())
@@ -124,10 +123,6 @@ class detailFragment : Fragment() {
 
     fun onSongReceived(song: Song?, view: View) {
 
-        //sets text from song api to the view
-//        view.findViewById<TextView>(R.id.songNameTextView).text = song.title
-//        view.findViewById<TextView>(R.id.artistNameTextView).text = song.author
-
         val video_Id = songs.get(song_num).videoId
         Log.v("API Response", video_Id.toString())
 
@@ -161,9 +156,7 @@ class detailFragment : Fragment() {
 
                         }
                     }
-
                 })
-
         }
     }
 }

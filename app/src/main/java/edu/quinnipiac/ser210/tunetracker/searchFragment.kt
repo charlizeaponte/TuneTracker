@@ -115,10 +115,8 @@ class searchFragment : Fragment() {
 
                             }
                         }
-
                     })
             }
         }
-
     }
 }
