@@ -81,11 +81,12 @@ class SongItemAdapter(val context: Context, var navController: NavController) : 
             val currSong = songs.get(position)
             title.text = currSong.title
 
+            //trying to find why artist is null
             val artist = currSong.author
             val duration =  currSong.duration
 
-            Log.d("Song Info", currSong.toString())
-            artistDuration.text = "By " + artist + " " + duration
+            //Log.d("Song Info", currSong.toString())
+            artistDuration.text = duration + " By " + artist
 
             Glide.with(context).load(currSong.thumbnail)
                 .apply(RequestOptions().centerCrop())
