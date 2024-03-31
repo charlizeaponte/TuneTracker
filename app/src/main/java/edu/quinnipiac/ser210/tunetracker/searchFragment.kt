@@ -81,13 +81,13 @@ class searchFragment : Fragment() {
         Log.d("searchFragment", "Fragment Created")
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView = view.findViewById(R.id.songsRecyclerView)
+        recyclerView = binding.songsRecyclerView
         recyclerAdapter = SongItemAdapter(requireContext(), Navigation.findNavController(view))
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = recyclerAdapter
 
 
-        var search = view.findViewById<EditText>(R.id.searchEditText)
+        var search = binding.searchEditText
 
         binding.searchButton.setOnClickListener {
             Log.v("button", "Searched for " + search.text.toString())
@@ -117,7 +117,6 @@ class searchFragment : Fragment() {
                         }
 
                     })
-
             }
         }
 
