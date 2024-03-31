@@ -52,7 +52,7 @@ class detailFragment : Fragment() {
             return
         }
         song_num = detailFragmentArgs.fromBundle(bundle).songNum
-        view?.findViewById<TextView>(R.id.lyricText)?.setText(lyrics)
+        binding.lyricText.setText(lyrics)
 
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
