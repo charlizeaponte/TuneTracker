@@ -124,9 +124,6 @@ class detailFragment : Fragment() {
 
     fun onSongReceived(song: Song?, view: View) {
 
-        //sets text from song api to the view
-//        view.findViewById<TextView>(R.id.songNameTextView).text = song.title
-//        view.findViewById<TextView>(R.id.artistNameTextView).text = song.author
 
         val video_Id = songs.get(song_num).videoId
         Log.v("API Response", video_Id.toString())
