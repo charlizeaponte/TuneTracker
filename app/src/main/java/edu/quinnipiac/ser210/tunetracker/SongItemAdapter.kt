@@ -12,21 +12,12 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import edu.quinnipiac.ser210.tunetracker.api.song.Song
 import androidx.navigation.fragment.findNavController
-//var songs = listOf<Song>()
 var songs : ArrayList<Song> = ArrayList()
 
 
 class SongItemAdapter(val context: Context, var navController: NavController) : RecyclerView.Adapter<SongItemAdapter.SongItemViewHolder>() {
 
 
-    //current error- Song object is not defined yet
-    //these are the objects we will pull from the API
-    //makes sure view updates when data changes
-//    var songs = listOf<Song>()
-//        set (value) {
-//            field = value
-//            notifyDataSetChanged()
-//        }
 
     //itemCount used to make sure we display all the data
     override fun getItemCount() = songs.size
@@ -47,8 +38,6 @@ class SongItemAdapter(val context: Context, var navController: NavController) : 
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_song,parent,false)
         return SongItemViewHolder(view, context, navController)
     }
-//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
-//    : SongItemViewHolder = SongItemViewHolder.inflateFrom(parent)
 
     //binds data to the view
     override fun onBindViewHolder(holder: SongItemViewHolder, position: Int) {
@@ -94,14 +83,3 @@ class SongItemAdapter(val context: Context, var navController: NavController) : 
             }
         }
 }
-
-/*  SESE:
-     WHEN YOU DO THE RECYCLEVIEW
-
-     pass in the Song as a serializable as the following when creating the details fragment
-     var bundle = Bundle() (or however it's made)
-
-     bundle.putSerializable(song)
-     -- where song is the Song object (in api.song.Song)
-
-    */
